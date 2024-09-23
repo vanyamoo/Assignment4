@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct Sept24A4App: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+    @State private var game = StandardSetGame()
+        var body: some Scene {
+            WindowGroup {
+                StandardSetGameView(game: game)
+            }
         }
-    }
 }
