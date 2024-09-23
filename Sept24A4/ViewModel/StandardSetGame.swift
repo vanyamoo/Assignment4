@@ -21,7 +21,16 @@ import SwiftUI
         }
     }
     
-    var isDeckEmpty: Bool { setGame.deck.isEmpty }
+    var isDeckEmpty: Bool { setGame.deck.isEmpty
+    }
+    
+    var discardPile: [Card] {
+        setGame.discardPile
+    }
+    
+    var deck: [Card] {
+        setGame.deck
+    }
     
     func isCardSelected(_ card: Card) -> Bool {
         card.isIn(setGame.selectedCards)

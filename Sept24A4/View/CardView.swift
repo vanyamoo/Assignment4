@@ -13,9 +13,8 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            let base = RoundedRectangle(cornerRadius: 10)
-            base.stroke(lineWidth: 1.5)
-            base.fill().foregroundStyle(cardColor)
+            Constants.cardBase.stroke(lineWidth: 1.5)
+            Constants.cardBase.fill().foregroundStyle(cardColor)
             VStack {
                 ForEach(0..<card.content.numOfShapes, id: \.self) { _ in
                     drawShape()
@@ -64,6 +63,10 @@ struct CardView: View {
                 shape.fill().opacity(0.2)
             }
         }
+    }
+    
+    struct Constants {
+        static let cardBase = RoundedRectangle(cornerRadius: 10)
     }
 }
 
