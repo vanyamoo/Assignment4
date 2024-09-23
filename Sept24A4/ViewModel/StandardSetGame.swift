@@ -21,6 +21,12 @@ import SwiftUI
         }
     }
     
+//    init(setGame: SetGame = createSetGame()) {
+//        self.setGame = setGame
+//        
+//        self.setGame.dealCards(12)
+//    }
+    
     var isDeckEmpty: Bool { setGame.deck.isEmpty
     }
     
@@ -44,10 +50,16 @@ import SwiftUI
     
     func newGame() {
         setGame = StandardSetGame.createSetGame()
+//        //deal initial 12 cards
+//        setGame.dealCards(12)
     }
     
     func select(_ card: Card) {
         setGame.select(card)
+    }
+    
+    func shuffle() {
+        setGame.shuffle()
     }
     
 }

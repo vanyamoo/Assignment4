@@ -8,7 +8,7 @@
 import Foundation
 
 struct SetGame {
-    private(set) var deck: [Card]
+    private(set) var deck: [Card] //= [Card]()
     
     /// The Array of cards currently selected by the user. Max 3 cards
     private(set) var selectedCards = [Card]()
@@ -106,6 +106,7 @@ struct SetGame {
         selectedCards.forEach { selectedCard in
             if let cardIndex = cardsInPlay.firstIndex(where: { $0.id == selectedCard.id } ) {
                 if !deck.isEmpty {
+                    discardPile.append(cardsInPlay[cardIndex])
                     cardsInPlay[cardIndex] = deck.removeFirst()
                 } else {
                     //cardsInPlay.remove(at: cardIndex)
@@ -118,6 +119,7 @@ struct SetGame {
     
     mutating func deal3MoreCards() {
         if isAMatchingTrio == .yes { // match
+            //discardSet()
             replaceSet()
         } else {
             dealCards(3)
@@ -143,7 +145,11 @@ struct SetGame {
         dealCards(12)
     }
     
-    private mutating func dealCards(_ numOfCards: Int) {
+    mutating func shuffle() {
+        cardsInPlay.shuffle()
+    }
+    
+    mutating func dealCards(_ numOfCards: Int) {
         
         if deck.count >= numOfCards {
             for _ in 0..<numOfCards {

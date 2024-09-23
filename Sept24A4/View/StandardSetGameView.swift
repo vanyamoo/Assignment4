@@ -20,29 +20,51 @@ struct StandardSetGameView: View {
                     .foregroundStyle(game.isCardSelected(card) ? .blue : .black)
                     .padding(4)
                     .onTapGesture {
-                        game.select(card)
-                        isSelected.toggle()
+                        withAnimation {
+                            game.select(card)
+                            isSelected.toggle()
+                        }
+                        
                     }
             }
+            
             
             HStack {
                 newGameButton
                 Spacer()
+                shuffleButton
+                Spacer()
                 deck
+                    .animation(nil, value: game.deck)
             }
             .padding()
         }
     }
     
-    private func view(for card: Card) -> some View {
-        CardView(card: card)
-            //.matchedGeometryEffect(id: card.id, in: dealingNamespace)
+    private func view(for card: Card, faceUp: Bool = true) -> some View {
+        CardView(card: card, isFaceUp: faceUp)
+            .matchedGeometryEffect(id: card.id, in: discardingNamespace)
+            .matchedGeometryEffect(id: card.id, in: dealingNamespace)
             //.transition(.asymmetric(insertion: .identity, removal: .identity))
     }
     
     var newGameButton: some View {
-        Button("New Game") { game.newGame() }
+        Button("New Game") {
+            withAnimation(.easeInOut(duration: 2)) {
+                game.newGame()
+            }
+        }
     }
+    
+    var shuffleButton: some View {
+        Button("Shuffle") {
+            withAnimation {
+                game.shuffle()
+            }
+        }
+    }
+    
+    @Namespace private var discardingNamespace
     
     var discardPile: some View {
         ZStack {
@@ -58,13 +80,19 @@ struct StandardSetGameView: View {
         .frame(width: deckWidth, height: deckWidth / aspectRatio)
     }
     
+    @Namespace private var dealingNamespace
+    
     var deck: some View {
         //Button("Deal 3 More Cards", action: { game.deal3MoreCards() } )
         //    .disabled(game.isDeckEmpty)
-        Button(action: { game.deal3MoreCards() }, label: {
+        Button(action: {
+            withAnimation {
+                game.deal3MoreCards()
+            }
+        }, label: {
             ZStack {
-                ForEach(game.deck) { _ in
-                    CardView.Constants.cardBase
+                ForEach(game.deck) { card in
+                    view(for: card, faceUp: false)
                         .frame(width: deckWidth, height: deckWidth / aspectRatio)
                 }
             }
